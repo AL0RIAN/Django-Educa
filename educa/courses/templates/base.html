@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+      <meta charset="UTF-8">
+      <title>{% block title %}Educa{% endblock %}</title>
+      <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    </head>
+    <body>
+        <div id="header">
+            <a href="/" class="logo">Educa</a>
+            <ul class="menu">
+                {% if request.user.is_authenticated %}
+                    <li>
+                        <button onclick="document.getElementById('logout-form').submit()"
+                        style="background: none; border: none; color: #fff; font-size: 16px; cursor: pointer; font-family: 'Roboto', sans-serif;">
+                            Sign out
+                        </button>
+                        <form id="logout-form" action="{% url 'logout' %}" method="POST">
+                            {% csrf_token %}
+                        </form>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Sign in</a></li>
+                {% endif %}
+            </ul>
+        </div>
+        <div id="content">
+            {% block content %}
+            {% endblock %}
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', (event) => {
+                {% block domready %}
+                {% endblock %}
+            })
+        </script>
+    </body>
+</html>
