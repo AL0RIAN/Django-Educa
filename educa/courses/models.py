@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
+from django.template.loader import render_to_string
 from .fields import OrderField
 
 
@@ -26,6 +27,7 @@ class Course(models.Model):
     slug = models.SlugField(max_length=200, unique=True)
     overview = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
+    students = models.ManyToManyField(User, 'courses_joined', blank=True)
 
     def __str__(self):
         return self.title
@@ -73,6 +75,12 @@ class ItemBase(models.Model):
     def __str__(self):
         return self.title
 
+    def render(self):
+        return render_to_string(
+            f'courses/content/{self._meta.model_name}.html',
+            {'item': self}
+        )
+
 
 class Text(ItemBase):
     content = models.TextField()
@@ -87,4 +95,4 @@ class Image(ItemBase):
 
 
 class Video(ItemBase):
-    url = models.URLField
+    url = models.URLField()

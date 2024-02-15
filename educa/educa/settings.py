@@ -1,5 +1,7 @@
 from pathlib import Path
 
+from django.urls import reverse_lazy
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-8wa!lhvumlz$d(wn9!$hmk4=@0t2-cojx#r%ly=8fp)3c-$i9^'
@@ -10,12 +12,15 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'courses.apps.CoursesConfig',
+    'students.apps.StudentsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'embed_video',
+    'easy_thumbnails',
 ]
 
 MIDDLEWARE = [
@@ -84,3 +89,13 @@ MEDIA_ROOT = BASE_DIR / 'media'
 STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = reverse_lazy('student_course_list')
+
+THUMBNAIL_ALIASES = {
+    '': {
+        'small': {'size': (100, 100)},
+        'medium': {'size': (300, 200)},
+        'large': {'size': (800, 600)},
+    },
+}
